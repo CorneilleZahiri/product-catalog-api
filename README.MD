@@ -49,44 +49,12 @@ fonctionnalités avancées.
 ## ⚙️ Installation
 
 ```bash
-# 1. Cloner le projet
+# Cloner le projet
 git clone https://github.com/votre-username/catalog-api.git
-
-# 2. Créer la base de données
-mysql -u root -p
-CREATE DATABASE db_product;
-
-# 3. Configurer application.yaml
-spring:
-  application:
-    name: product
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/db_product?createDatabaseIfNotExist=true
-    username: root
-    password: your_password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
-    locations: classpath:db/migration
-
-# 4. Lancer l'application
-mvn spring-boot:run
 ```
 
-**API disponible sur** : `http://localhost:8080`  
-**Documentation Swagger** : `http://localhost:8080/swagger-ui.html`
+**API disponible sur** : `http://localhost:8080/api/product`  
+**Documentation Swagger** : `http://localhost:8080/api/product/swagger-ui.html`
 
 ---
 
