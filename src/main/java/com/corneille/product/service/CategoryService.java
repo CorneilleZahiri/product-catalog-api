@@ -77,4 +77,11 @@ public class CategoryService {
 
         return categoryMapper.entityToDto(savedCategory);
     }
+
+    @Transactional
+    public void deleteCategory(Long id) {
+        //Convertion en entité
+        Category category = categoryMapper.dtoToEntity(getCategoryById(id));
+        categoryRepository.delete(category);
+    }
 }
