@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.Map;
 
 @RestController
-@RequestMapping("category")
+@RequestMapping("/categories")
 @AllArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
@@ -29,7 +29,7 @@ public class CategoryController {
 
         CategoryDto categoryDto = categoryService.createCategory(request);
 
-        URI location = uriComponentsBuilder.path("/category/{id}").buildAndExpand(categoryDto.getId()).toUri();
+        URI location = uriComponentsBuilder.path("/categories/{id}").buildAndExpand(categoryDto.getId()).toUri();
 
         return ResponseEntity.created(location).body(categoryDto);
     }
