@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /api/product
+    context-path: /api/catalogueProduct
 spring:
   application:
     name: product

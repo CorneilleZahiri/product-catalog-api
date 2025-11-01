@@ -55,4 +55,9 @@ public class CategoryController {
 
         return categoryService.categoryDtoPage(pageable);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDto> getCategorieById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(categoryService.getCategoryById(id));
+    }
 }

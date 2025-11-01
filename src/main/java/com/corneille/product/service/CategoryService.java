@@ -4,6 +4,7 @@ import com.corneille.product.dto.CategoryDto;
 import com.corneille.product.dto.CategoryRequest;
 import com.corneille.product.entity.Category;
 import com.corneille.product.exception.AttributeAlreadyExistException;
+import com.corneille.product.exception.EntityNotFoundException;
 import com.corneille.product.mapper.CategoryMapper;
 import com.corneille.product.repository.CategoryRepository;
 import jakarta.persistence.EntityManager;
@@ -42,5 +43,15 @@ public class CategoryService {
     @Transactional
     public Page<CategoryDto> categoryDtoPage(Pageable pageable) {
         return categoryRepository.findAll(pageable).map(categoryMapper::toDto);
+    }
+
+    @Transactional
+    public CategoryDto getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (category == null) {
+            throw new EntityNotFoundException("L'id " + id + " n'existe pas.");
+        }
+
+        return categoryMapper.toDto(category);
     }
 }
