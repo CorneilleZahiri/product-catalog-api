@@ -60,4 +60,10 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> getCategorieById(@PathVariable Long id) {
         return ResponseEntity.ok().body(categoryService.getCategoryById(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDto> update(@Valid @RequestBody CategoryRequest request,
+                                              @PathVariable Long id) {
+        return ResponseEntity.ok().body(categoryService.updateCategory(request, id));
+    }
 }

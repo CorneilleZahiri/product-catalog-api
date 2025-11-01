@@ -29,7 +29,7 @@ public class CategoryService {
         }
 
         //Convertir le paramètre en entité
-        Category category = categoryMapper.toEntity(request);
+        Category category = categoryMapper.requestRoEntity(request);
 
         //Ajouter l'objet à EntityManager dans un 1er temps avec save() puis faire l'insertion en BD immédiatement
         Category savedCategory = categoryRepository.saveAndFlush(category);
@@ -37,12 +37,12 @@ public class CategoryService {
         // Vider le cache et recharger depuis la BD
         entityManager.refresh(savedCategory);
 
-        return categoryMapper.toDto(savedCategory);
+        return categoryMapper.entityToDto(savedCategory);
     }
 
     @Transactional
     public Page<CategoryDto> categoryDtoPage(Pageable pageable) {
-        return categoryRepository.findAll(pageable).map(categoryMapper::toDto);
+        return categoryRepository.findAll(pageable).map(categoryMapper::entityToDto);
     }
 
     @Transactional
@@ -52,6 +52,29 @@ public class CategoryService {
             throw new EntityNotFoundException("L'id " + id + " n'existe pas.");
         }
 
-        return categoryMapper.toDto(category);
+        return categoryMapper.entityToDto(category);
+    }
+
+    @Transactional
+    public CategoryDto updateCategory(CategoryRequest request, Long id) {
+        //Convertion en entité
+        Category category = categoryMapper.dtoToEntity(getCategoryById(id));
+
+        //Contrôler le doublon sur le nom de la catégorie
+        Category searchCategoryByName = categoryRepository.findByName(request.getName()).orElse(null);
+        if (searchCategoryByName != null && id != searchCategoryByName.getId()) {
+            throw new AttributeAlreadyExistException("Erreur de doublon! Le nom " + request.getName() + " existe déjà.");
+        }
+
+        //Mapping
+        categoryMapper.update(request, category);
+
+        //Ajouter l'objet à EntityManager dans un 1er temps avec save() puis faire l'insertion en BD immédiatement
+        Category savedCategory = categoryRepository.saveAndFlush(category);
+
+        // Vider le cache et recharger depuis la BD
+        entityManager.refresh(savedCategory);
+
+        return categoryMapper.entityToDto(savedCategory);
     }
 }
