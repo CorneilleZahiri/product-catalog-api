@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -31,5 +32,11 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categories_id")
     private Category category;
+
+    @Column(nullable = false, name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false, name = "updated_at", insertable = false, updatable = false)
+    private LocalDateTime updatedAt;
 
 }
