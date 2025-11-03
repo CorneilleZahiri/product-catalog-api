@@ -10,6 +10,8 @@ import com.corneille.product.mapper.ProductMapper;
 import com.corneille.product.repository.ProductRepository;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,5 +46,10 @@ public class ProductService {
         entityManager.refresh(productSaved);
 
         return productMapper.entityToDto(productSaved);
+    }
+
+    @Transactional
+    public Page<ProductDto> productList(Pageable pageable) {
+        return productRepository.productList(pageable).map(productMapper::entityToDto);
     }
 }
