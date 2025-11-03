@@ -37,8 +37,6 @@ public class ProductService {
 
         //Mapping
         Product product = productMapper.requestRoEntity(request);
-        //Liaison avec l'entité catégorie
-        product.setCategory(categoryMapper.dtoToEntity(categoryDto));
 
         //Enregistrer en base de données
         Product productSaved = productRepository.saveAndFlush(product);
@@ -55,12 +53,29 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductDto getProduct(Long id) {
+    public ProductDto getProductById(Long id) {
         Product product = productRepository.findById(id).orElse(null);
         if (!productRepository.existsById(id)) {
             throw new EntityNotFoundException("Le produit ayant l'id " + id + " n'existe pas");
         }
 
         return productMapper.entityToDto(product);
+    }
+
+    @Transactional
+    public ProductDto updateProduct(ProductRequest request, Long id) {
+        //Vérifier l'existence de l'Id
+        Product product = productMapper.dtoToEntity(getProductById(id));
+
+        //Mapping
+        productMapper.updateProduct(request, product);
+
+        //Sauvegarder en BD
+        Product productSaved = productRepository.saveAndFlush(product);
+
+        //Mettre à jour le cache
+        entityManager.refresh(productSaved);
+
+        return productMapper.entityToDto(productSaved);
     }
 }
