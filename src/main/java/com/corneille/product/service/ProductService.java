@@ -5,6 +5,7 @@ import com.corneille.product.dto.ProductDto;
 import com.corneille.product.dto.ProductRequest;
 import com.corneille.product.entity.Product;
 import com.corneille.product.exception.AttributeAlreadyExistException;
+import com.corneille.product.exception.EntityNotFoundException;
 import com.corneille.product.mapper.CategoryMapper;
 import com.corneille.product.mapper.ProductMapper;
 import com.corneille.product.repository.ProductRepository;
@@ -51,5 +52,15 @@ public class ProductService {
     @Transactional
     public Page<ProductDto> productList(Pageable pageable) {
         return productRepository.productList(pageable).map(productMapper::entityToDto);
+    }
+
+    @Transactional
+    public ProductDto getProduct(Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (!productRepository.existsById(id)) {
+            throw new EntityNotFoundException("Le produit ayant l'id " + id + " n'existe pas");
+        }
+
+        return productMapper.entityToDto(product);
     }
 }

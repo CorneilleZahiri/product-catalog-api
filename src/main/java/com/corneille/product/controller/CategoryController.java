@@ -35,10 +35,10 @@ public class CategoryController {
     }
 
     @GetMapping
-    public Page<CategoryDto> categoryDtoPage(@RequestParam(required = false, defaultValue = "0", name = "page") int page,
-                                             @RequestParam(required = false, defaultValue = "10", name = "size") int size,
-                                             @RequestParam(required = false, defaultValue = "name", name = "sort") String sortBy,
-                                             @RequestParam(required = false, defaultValue = "asc", name = "direction") String direction) {
+    public ResponseEntity<Page<CategoryDto>> categoryDtoPage(@RequestParam(required = false, defaultValue = "0", name = "page") int page,
+                                                             @RequestParam(required = false, defaultValue = "10", name = "size") int size,
+                                                             @RequestParam(required = false, defaultValue = "name", name = "sort") String sortBy,
+                                                             @RequestParam(required = false, defaultValue = "asc", name = "direction") String direction) {
         //Les attributs concernés par le trie
         Map<String, String> allowedFields = Map.of(
                 "name", "name",
@@ -53,7 +53,7 @@ public class CategoryController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(dir, field));
 
-        return categoryService.categoryDtoPage(pageable);
+        return ResponseEntity.ok().body(categoryService.categoryList(pageable));
     }
 
     @GetMapping("/{id}")

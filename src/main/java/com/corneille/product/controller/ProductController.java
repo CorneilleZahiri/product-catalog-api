@@ -56,4 +56,9 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.productList(pageable));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok().body(productService.getProduct(id));
+    }
+
 }
