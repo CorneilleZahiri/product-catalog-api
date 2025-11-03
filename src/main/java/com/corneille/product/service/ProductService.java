@@ -78,4 +78,11 @@ public class ProductService {
 
         return productMapper.entityToDto(productSaved);
     }
+
+    @Transactional
+    public void deleteProductById(Long id) {
+        //Vérifier l'existence de l'Id
+        Product product = productMapper.dtoToEntity(getProductById(id));
+        productRepository.delete(product);
+    }
 }
