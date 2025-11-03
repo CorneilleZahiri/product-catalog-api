@@ -41,7 +41,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public Page<CategoryDto> categoryDtoPage(Pageable pageable) {
+    public Page<CategoryDto> categoryList(Pageable pageable) {
         return categoryRepository.findAll(pageable).map(categoryMapper::entityToDto);
     }
 
@@ -49,7 +49,7 @@ public class CategoryService {
     public CategoryDto getCategoryById(Long id) {
         Category category = categoryRepository.findById(id).orElse(null);
         if (category == null) {
-            throw new EntityNotFoundException("L'id " + id + " n'existe pas.");
+            throw new EntityNotFoundException("La catégorie ayant l'id " + id + " n'existe pas");
         }
 
         return categoryMapper.entityToDto(category);
